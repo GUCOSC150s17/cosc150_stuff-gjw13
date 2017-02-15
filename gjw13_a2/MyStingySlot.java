@@ -78,19 +78,22 @@ public class MyStingySlot {
 		// **** method is functional but does not handle fullHousePayoff test
 		// **** and twoPairPayoff test as it is not able to distinguish between 
 		// **** two pairs or three of a kind and a pair
-		
+		cash = 0;
 		// checking rule 1 --> big payoff
 		if (rule1(m) == true){
 			cash += 1000000;
 		}
 		else if (rule2(m) == true){ // checking rule 2 --> 4 of a kind
 			cash += 10000;
+			//System.out.println("4 of a kind!");
 		}
 		else if (rule3(m) == true){ // checking rule 3 --> full house
 			cash += 500;
+			//System.out.println("Full house!");
 		}
 		else if (rule4(m) == true){ // checking rule 4 --> 3 of a kind
 			cash += 10;
+			//System.out.println("3 of a kind!");
 		}
 		else if (rule5(m) == true){ // checking rule 5 --> pair
 			cash += 2;
@@ -145,13 +148,26 @@ public class MyStingySlot {
 	//method to test rule 3 --> full house
 	boolean rule3(int[] m)
 	{
-		// this method needs some work
-		// having trouble distinguishing between 3 of a kind and 2 of a kind
-//		if(isThreeOfAKind(m) && isPair(m)==true)
-//			return true;
-//		else
-//			return false;
-		return false;
+		int[] fh = new int[61]; // new array to count numbers in m
+		boolean is3 = false;
+		boolean is2 = false;
+		for(int i=0; i<m.length;i++){ // for loop to put numbers in fh
+			int num = m[i];
+			fh[num] ++;
+		}
+		
+		for(int j=0;j<fh.length;j++){ // traverse fh to check for 3 and 2
+			if(fh[j] ==3)
+				is3 = true;
+			if(fh[j] ==2)
+				is2 = true;
+		}
+		
+		// if both 3 of a kind and 2 of a kind are true
+		if(is3 == true && is2==true)
+			return true;
+		else // not a full house
+			return false;
 	}
 	
 	// method to test rule 4 --> 3 of a kind
@@ -165,10 +181,28 @@ public class MyStingySlot {
 	
 	// method to test rule 5 --> pair
 	boolean rule5(int[] m){
-		if (isPair(m) == true)
-			return true;
+		int[] fh = new int[60]; // new array to count numbers in m
+		boolean is2 = false;
+		for(int i=0; i<m.length;i++) // for loop to put numbers in fh
+		{
+			int num = m[i];
+			fh[num] ++; // similar process as hashing
+		}
+		int count = 0; // count if one or two pairs
+		for(int j=0;j<fh.length;j++){ // traverse fh to check for 3 and 2
+			if(fh[j] ==2)
+				count++;
+		}
+		if(count == 1) // one pair
+			is2 = true;
+		else if (count == 2){ // two pair
+			is2 = true;
+			cash+=2;
+		}
 		else
-			return false;
+			return false; // no pairs
+		return is2;
+			
 	}
 	
 	// helper method for rule 3 and main method for rule 4
@@ -179,8 +213,9 @@ public class MyStingySlot {
 	    //If 3 matches are made - return true
 	    for(int x = 1; x < m.length; x++){
 	        for(int y = 0; y < x; y++){
-	            if(m[x] == m[y]) 
+	            if(m[x] == m[y]) {
 	            	count++;
+	            }
 	        }
 	        if (count == 2)  
 	        	return true;

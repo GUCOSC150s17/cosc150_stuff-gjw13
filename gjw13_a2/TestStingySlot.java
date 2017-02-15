@@ -14,13 +14,14 @@ import org.junit.Test;
 
 public class TestStingySlot {
 	
-	StingySlot s; // make Stingy slot object to use throughout testing
-	
+	MyStingySlot s; // make Stingy slot object to use throughout testing
+	//StingySlot ss;
 	
 	@Before 
 	public void before() 
 	{
-		s = new StingySlot();
+		s = new MyStingySlot();
+		//ss = new StingySlot();
 	} 
 	
 	// Test to see if payoff is right for five of a kind
@@ -174,17 +175,21 @@ public class TestStingySlot {
 	public void averageWinnings()
 	{
 		double totalWinnings = 0.0;
+		double totalWinnings2 = 0.0;
 		for(int i=0; i < 1000000;i++){
 			s.doSpin();
-			//System.out.print(s.spin[i] + " ");
+			//ss.setSpin(m);
 			totalWinnings += s.payoff();
+			//totalWinnings2 += ss.payoff();
 		}
 		DecimalFormat df;
 		df = new DecimalFormat("#.##");
 		double d = (2000000 - totalWinnings);
 		
-		System.out.println("total winnings: $" + df.format(totalWinnings));
-		System.out.println("total profit: $" + (df.format(d)));
+		System.out.println("total winnings for 1mil spins: $"+df.format(totalWinnings));
+		System.out.println("total profit for 1mil spins:   $" + (df.format(d)));
+//		System.out.println("versus totalWinnings2: $" + df.format(totalWinnings2));
+//		System.out.println("the difference is: " + (totalWinnings-totalWinnings2));
 		assertTrue("Average winnings test", totalWinnings < (2*1000000));
 	}
 	
