@@ -14,12 +14,12 @@ import org.junit.Test;
 
 public class TestStingySlot {
 	
-	StingySlot s; // make Stingy slot object to use throughout testing
+	MyStingySlot s; // make Stingy slot object to use throughout testing
 	
 	@Before 
 	public void before() 
 	{
-		s = new StingySlot();
+		s = new MyStingySlot();
 	} 
 	
 	// Test to see if payoff is right for five of a kind
